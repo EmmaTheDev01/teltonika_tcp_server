@@ -442,12 +442,13 @@ async function forwardToWebApp(parsedData, rawBuffer) {
         }
       });
 
-    log('info', 'Successfully forwarded to web app', {
-      status: response.status,
-      imei: parsedData.imei
-    });
+      log('info', 'Successfully forwarded to web app', {
+        status: response.status,
+        imei: parsedData.imei
+      });
 
-    return response.data;
+      return response.data;
+    }
 
   } catch (error) {
     log('error', 'Failed to forward data to web app', {
