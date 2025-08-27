@@ -40,6 +40,66 @@ let totalPacketsReceived = 0;
 let totalPacketsProcessed = 0;
 let totalPacketsFailed = 0;
 
+// Extract battery level from IO data
+function extractBatteryLevel(record) {
+  try {
+    // Look for battery level in data1 (1-byte IO elements)
+    const batteryData = record.gpsElement.data1.find(item => 
+      item.id === 67 || // Common battery level IO ID
+      item.id === 68    // Alternative battery level IO ID
+    );
+    
+    if (batteryData) {
+      return batteryData.value;
+    }
+
+    // Look in data2 (2-byte IO elements) if not found in data1
+    const batteryData2 = record.gpsElement.data2.find(item => 
+      item.id === 67 || 
+      item.id === 68
+    );
+    
+    if (batteryData2) {
+      return batteryData2.value;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Error extracting battery level:', error);
+    return null;
+  }
+}
+
+// Extract signal strength from IO data
+function extractSignalStrength(record) {
+  try {
+    // Look for signal strength in data1 (1-byte IO elements)
+    const signalData = record.gpsElement.data1.find(item => 
+      item.id === 66 || // Common signal strength IO ID
+      item.id === 69    // Alternative signal strength IO ID
+    );
+    
+    if (signalData) {
+      return signalData.value;
+    }
+
+    // Look in data2 (2-byte IO elements) if not found in data1
+    const signalData2 = record.gpsElement.data2.find(item => 
+      item.id === 66 || 
+      item.id === 69
+    );
+    
+    if (signalData2) {
+      return signalData2.value;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Error extracting signal strength:', error);
+    return null;
+  }
+}
+
 // Logging utility
 function log(level, message, data = null) {
   const timestamp = new Date().toISOString();
@@ -348,24 +408,39 @@ async function forwardToWebApp(parsedData, rawBuffer) {
       codecId: parsedData.codecId
     });
 
-    // Send parsed data to web app API
-    const response = await axios.post(WEB_APP_API_URL, {
-      parsedData,
-      rawData: rawBuffer.toString('hex'),
-      source: 'teltonika-tcp-server',
-      timestamp: new Date().toISOString(),
-      serverInfo: {
-        serverId: process.env.SERVER_ID || 'tcp-server-1',
-        version: '1.0.0'
-      }
-    }, {
-      timeout: API_TIMEOUT,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Source': 'teltonika-tcp-server',
-        'X-Server-ID': process.env.SERVER_ID || 'tcp-server-1'
-      }
-    });
+    // Process each GPS record and send to simple GPS endpoint
+    for (let i = 0; i < parsedData.records.length; i++) {
+      const record = parsedData.records[i];
+      
+      // Convert Teltonika record to simple GPS format
+      const simpleGpsData = {
+        imei: parsedData.imei,
+        latitude: record.gpsElement.latitude,
+        longitude: record.gpsElement.longitude,
+        altitude: record.gpsElement.altitude,
+        speed: record.gpsElement.speed,
+        heading: record.gpsElement.angle,
+        satellites: record.gpsElement.satellites,
+        timestamp: new Date(record.timestamp * 1000).toISOString(),
+        accuracy: 5.0, // Default accuracy
+        batteryLevel: extractBatteryLevel(record),
+        signalStrength: extractSignalStrength(record),
+        source: 'teltonika-tcp-server',
+        serverInfo: {
+          serverId: process.env.SERVER_ID || 'tcp-server-1',
+          version: '1.0.0'
+        }
+      };
+
+      // Send to simple GPS endpoint
+      const response = await axios.post(WEB_APP_API_URL, simpleGpsData, {
+        timeout: API_TIMEOUT,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Source': 'teltonika-tcp-server',
+          'X-Server-ID': process.env.SERVER_ID || 'tcp-server-1'
+        }
+      });
 
     log('info', 'Successfully forwarded to web app', {
       status: response.status,

@@ -6,8 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Test configuration
-const TCP_HOST = process.env.TCP_HOST || 'localhost';
-const TCP_PORT = process.env.TCP_PORT || 5001;
+const TCP_HOST = process.env.TCP_HOST || 'rfmntsgps.up.railway.app';
+const TCP_PORT = process.env.TCP_PORT || 5000;
 
 // Sample Teltonika AVL packet (simplified for testing)
 function createTestAVLPacket(imei = '123456789012345') {
