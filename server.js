@@ -412,28 +412,25 @@ async function forwardToWebApp(parsedData, rawBuffer) {
     for (let i = 0; i < parsedData.records.length; i++) {
       const record = parsedData.records[i];
       
-      // Convert Teltonika record to simple GPS format
-      const simpleGpsData = {
-        imei: parsedData.imei,
-        latitude: record.gpsElement.latitude,
-        longitude: record.gpsElement.longitude,
-        altitude: record.gpsElement.altitude,
-        speed: record.gpsElement.speed,
-        heading: record.gpsElement.angle,
-        satellites: record.gpsElement.satellites,
-        timestamp: new Date(record.timestamp * 1000).toISOString(),
-        accuracy: 5.0, // Default accuracy
-        batteryLevel: extractBatteryLevel(record),
-        signalStrength: extractSignalStrength(record),
+      // Send the original parsed Teltonika AVL data
+      const avlData = {
+        parsedData: {
+          imei: parsedData.imei,
+          records: [record],
+          recordCount: 1,
+          codecId: parsedData.codecId
+        },
+        rawData: rawBuffer.toString('hex'),
         source: 'teltonika-tcp-server',
+        timestamp: new Date().toISOString(),
         serverInfo: {
           serverId: process.env.SERVER_ID || 'tcp-server-1',
           version: '1.0.0'
         }
       };
 
-      // Send to simple GPS endpoint
-      const response = await axios.post(WEB_APP_API_URL, simpleGpsData, {
+      // Send to Teltonika AVL endpoint
+      const response = await axios.post(WEB_APP_API_URL, avlData, {
         timeout: API_TIMEOUT,
         headers: {
           'Content-Type': 'application/json',
