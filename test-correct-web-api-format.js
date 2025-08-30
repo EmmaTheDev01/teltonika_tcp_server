@@ -256,4 +256,7 @@ async function runCorrectFormatTests() {
 
 // Run the tests
 runCorrectFormatTests().catch(console.error);
+<<<<<<< HEAD
 
+=======
+>>>>>>> d88f2a0 (Initia commit)

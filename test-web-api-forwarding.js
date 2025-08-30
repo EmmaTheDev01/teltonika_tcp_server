@@ -4,7 +4,11 @@ import axios from 'axios';
 // Configuration
 const TCP_PORT = 5001;
 const TCP_HOST = 'localhost';
+<<<<<<< HEAD
 const WEB_APP_API_URL = 'https://rfmnts.onrender.com/api/gps/teltonika';
+=======
+const WEB_APP_API_URL = 'http://localhost:3000/api/gps/teltonika';
+>>>>>>> d88f2a0 (Initia commit)
 
 // Test 1: Test web API directly with simple GPS data
 async function testWebAPIDirectly() {

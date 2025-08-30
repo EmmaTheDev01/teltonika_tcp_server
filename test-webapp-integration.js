@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const WEB_APP_API_URL = 'https://rfmnts.onrender.com/api/gps/teltonika';
+const WEB_APP_API_URL = 'http://localhost:3000/api/gps/teltonika';
 
 // Test GPS data in the format your server sends
 const testGpsData = {

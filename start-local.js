@@ -15,7 +15,7 @@ console.log('🚀 Starting Teltonika TCP Server locally...');
 console.log('📋 Configuration:');
 console.log(`   TCP Port: ${process.env.TCP_PORT || 5000}`);
 console.log(`   TCP Host: ${process.env.TCP_HOST || '0.0.0.0'}`);
-console.log(`   Next.js API: ${process.env.NEXT_API_URL || 'http://localhost:3000/api/gps/teltonika'}`);
+console.log(`   Web App API: ${process.env.WEB_APP_API_URL || 'http://localhost:3000/api/gps/teltonika'}`);
 console.log(`   Health Port: ${process.env.HEALTH_PORT || 8080}`);
 console.log('');
 

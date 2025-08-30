@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 // Configuration - All from environment variables
 const TCP_PORT = parseInt(process.env.TCP_PORT) || 5001;
 const TCP_HOST = process.env.TCP_HOST || '0.0.0.0';
-const WEB_APP_API_URL = process.env.WEB_APP_API_URL || 'http://rfmnts.onrender.com/api/gps/teltonika';
+const WEB_APP_API_URL = process.env.WEB_APP_API_URL || 'https://rfmnts.onrender.com/api/gps/teltonika';
 const API_TIMEOUT = parseInt(process.env.API_TIMEOUT) || 10000;
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 const ENABLE_DEBUG_LOGGING = process.env.ENABLE_DEBUG_LOGGING === 'true';
