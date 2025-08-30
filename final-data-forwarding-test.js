@@ -4,11 +4,7 @@ import net from 'net';
 // Configuration
 const TCP_PORT = 5001;
 const TCP_HOST = 'localhost';
-<<<<<<< HEAD
-const WEB_APP_API_URL = 'https://rfmnts.onrender.com/api/gps/teltonika';
-=======
 const WEB_APP_API_URL = 'http://localhost:3000/api/gps/teltonika';
->>>>>>> d88f2a0 (Initia commit)
 
 // Test 1: Test TCP server with corrected packet format
 async function testTCPServerWithCorrectedPacket() {
@@ -350,7 +346,3 @@ async function runFinalDataForwardingTest() {
 
 // Run the tests
 runFinalDataForwardingTest().catch(console.error);
-<<<<<<< HEAD
-
-=======
->>>>>>> d88f2a0 (Initia commit)

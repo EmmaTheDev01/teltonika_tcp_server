@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 // Configuration
-<<<<<<< HEAD
-const WEB_APP_API_URL = 'https://rfmnts.onrender.com/api/gps/teltonika';
-=======
 const WEB_APP_API_URL = 'http://localhost:3000/api/gps/teltonika';
->>>>>>> d88f2a0 (Initia commit)
 
 // Test the exact format your web API expects
 async function testWebAPIExactFormat() {
@@ -258,7 +254,3 @@ async function runFinalTests() {
 
 // Run the tests
 runFinalTests().catch(console.error);
-<<<<<<< HEAD
-
-=======
->>>>>>> d88f2a0 (Initia commit)

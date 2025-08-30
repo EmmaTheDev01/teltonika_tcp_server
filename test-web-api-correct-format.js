@@ -153,7 +153,3 @@ async function testWebAPIFormats() {
 
 // Run the tests
 testWebAPIFormats().catch(console.error);
-<<<<<<< HEAD
-
-=======
->>>>>>> d88f2a0 (Initia commit)
